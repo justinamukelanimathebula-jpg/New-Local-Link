@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Dashboard - LocalLink</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard">
+  <aside class="sidebar">
+    <div class="sidebar-brand">LocalLink Driver</div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Available Jobs</a></li>
+      <li><a href="#">My Deliveries</a></li>
+      <li><a href="#">Earnings</a></li>
+      <li><a href="#">Map</a></li>
+      <li><a href="#">Profile</a></li>
+      <li><a href="#" id="logoutBtn">Log Out</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div class="dashboard-header">
+      <h1>Driver Dashboard</h1>
+      <span id="currentDate"></span>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <h3>Completed Trips</h3>
+        <div class="value" id="tripCount">0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Today's Earnings</h3>
+        <div class="value" id="earningsCount">$0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Rating</h3>
+        <div class="value" id="ratingCount">5.0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Available Jobs</h3>
+        <div class="value" id="jobCount">0</div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>Available Delivery Requests</h2>
+      <div id="deliveryList">
+        <p>No available requests in your area.</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import Auth from '../js/auth.js';
+
+    Auth.init();
+    Auth.onAuthChange = (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    };
+
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await Auth.signOut();
+    });
+  </script>
+</body>
+</html>

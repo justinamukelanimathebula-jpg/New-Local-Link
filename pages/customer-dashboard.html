@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard - LocalLink</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard">
+  <aside class="sidebar">
+    <div class="sidebar-brand">LocalLink</div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Browse Businesses</a></li>
+      <li><a href="#">My Bookings</a></li>
+      <li><a href="#">Orders</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">Messages</a></li>
+      <li><a href="#">Profile</a></li>
+      <li><a href="#" id="logoutBtn">Log Out</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div class="dashboard-header">
+      <h1>Welcome back, <span id="userName">Resident</span>!</h1>
+      <span id="currentDate"></span>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <h3>My Bookings</h3>
+        <div class="value" id="bookingCount">0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Active Orders</h3>
+        <div class="value" id="orderCount">0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Saved Businesses</h3>
+        <div class="value" id="savedCount">0</div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Messages</h3>
+        <div class="value" id="messageCount">0</div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>Nearby Businesses</h2>
+      <p>Discover local businesses in your area.</p>
+      <div class="business-list" id="businessList">
+        <p>Loading businesses...</p>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>Recent Activity</h2>
+      <div class="activity-list" id="activityList">
+        <p>No recent activity.</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import Auth from '../js/auth.js';
+
+    Auth.init();
+    Auth.onAuthChange = (user) => {
+      if (user) {
+        document.getElementById('userName').textContent = user.displayName || 'Resident';
+      } else {
+        window.location.href = 'login.html';
+      }
+    };
+
+    // Set current date
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await Auth.signOut();
+    });
+  </script>
+</body>
+</html>
