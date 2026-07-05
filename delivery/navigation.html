@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/delivery.css">
+    <style> #map { height: 400px; width: 100%; background: #334155; } </style>
+</head>
+<body>
+    <div id="map">
+        <center style="padding-top: 150px;">[Live Map View]</center>
+    </div>
+
+    <div class="card" style="margin: 15px;">
+        <button class="btn btn-primary" onclick="alert('Calling Customer...')">Call Customer</button>
+    </div>
+
+    <script type="module">
+        import { db } from './js/firebase.js';
+        import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
+
+        const driverId = "driver_123";
+
+        // Update driver location every 5 seconds
+        setInterval(() => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    await setDoc(doc(db, "driverLocations", driverId), {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        timestamp: new Date()
+                    }, { merge: true });
+                });
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+

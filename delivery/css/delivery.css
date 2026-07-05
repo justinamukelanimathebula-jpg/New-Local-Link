@@ -1,0 +1,25 @@
+/* delivery/css/delivery.css */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f8fafc;
+    --primary: #eab308; /* Yellow/Gold for high visibility */
+    --success: #22c55e;
+    --border: #334155;
+}
+
+body { margin: 0; font-family: sans-serif; background: var(--bg-dark); color: var(--text-main); }
+
+.status-bar { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); }
+.btn-toggle { padding: 10px 20px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; }
+.online { background: var(--success); color: white; }
+.offline { background: #64748b; color: white; }
+
+.order-card { background: var(--card-bg); margin: 15px; padding: 20px; border-radius: 12px; border-left: 5px solid var(--primary); }
+
+.bottom-nav {
+    position: fixed; bottom: 0; width: 100%; height: 70px;
+    background: var(--card-bg); display: flex; justify-content: space-around;
+    align-items: center; border-top: 1px solid var(--border);
+}
+

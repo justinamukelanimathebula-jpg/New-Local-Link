@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store Profile | LocalLink</title>
+    <link rel="stylesheet" href="css/vendor.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-logo">LocalLink Vendor</div>
+        <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+        <a href="store-profile.html" class="nav-item active">🏪 Store Profile</a>
+        <a href="#" class="nav-item">🍔 Menu</a>
+    </nav>
+
+    <main class="main-content">
+        <header class="topbar">
+            <h2>Store Profile Management</h2>
+        </header>
+
+        <div class="page-container">
+            <div class="card">
+                <h3>Business Identity</h3>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">Note: Store name can only be changed once every 90 days.</p>
+                
+                <div class="form-group">
+                    <label>Store Name</label>
+                    <input type="text" id="storeName" class="form-control" placeholder="Enter store name">
+                    <small id="nameWarning" style="color: var(--danger); display: none;"></small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Business Description</label>
+                    <textarea id="storeDesc" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="grid-cards">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="storeCategory" class="form-control">
+                            <option>Fast Food</option>
+                            <option>Fine Dining</option>
+                            <option>Grocery</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="storePhone" class="form-control">
+                    </div>
+                </div>
+
+                <button id="saveProfileBtn" class="btn btn-success">Save Profile Data</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/store.js"></script>
+</body>
+</html>
+

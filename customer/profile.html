@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | LocalLink</title>
+    <link rel="stylesheet" href="css/customer.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <h2>My Profile</h2>
+    </header>
+
+    <div class="page-container">
+        
+        <div class="card">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%;"></div>
+                <div>
+                    <h3 style="margin: 0;" id="displayName">Loading...</h3>
+                    <span style="color: var(--primary);">⭐ Gold Member</span>
+                </div>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Note: Username can only be changed once every 90 days.</p>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" class="form-control" placeholder="@username">
+                <small id="usernameWarning" style="color: var(--danger); display: none; margin-top: 5px; display: block;"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" class="form-control">
+            </div>
+
+            <button id="saveProfileBtn" class="btn btn-primary">Save Changes</button>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top: 0;">Quick Settings</h3>
+            <button class="btn" style="background: var(--bg-dark); border: 1px solid var(--border); margin-bottom: 10px;">📍 Manage Addresses</button>
+            <button class="btn" style="background: var(--bg-dark); border: 1px solid var(--border);">💳 Payment Methods</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item"><span>🏠</span>Home</a>
+        <a href="#" class="nav-item"><span>🔍</span>Search</a>
+        <a href="#" class="nav-item"><span>🛒</span>Cart</a>
+        <a href="#" class="nav-item"><span>📦</span>Orders</a>
+        <a href="profile.html" class="nav-item active"><span>👤</span>Profile</a>
+    </nav>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>
+

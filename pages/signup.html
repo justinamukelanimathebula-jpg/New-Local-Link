@@ -4,144 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - LocalLink</title>
-  <link rel="stylesheet" href="../css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+  <script>var vConsole = new VConsole();</script>
 </head>
 <body class="auth-page">
   <div class="auth-container">
     <h1>Join LocalLink</h1>
-    <p class="subtitle">Create your account and connect with your community</p>
-
-    <form id="signupForm">
-      <div class="form-group">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
-        <span class="error-message" id="nameError"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="you@example.com">
-        <span class="error-message" id="emailError"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
-      </div>
-
-      <div class="form-group">
-        <label for="userType">I want to join as a...</label>
-        <select id="userType" name="userType" required>
-          <option value="">Select account type</option>
-          <option value="customer">Resident / Customer</option>
-          <option value="vendor">Business Owner</option>
-          <option value="driver">Driver</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required minlength="6" placeholder="At least 6 characters">
-        <span class="error-message" id="passwordError"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Repeat your password">
-        <span class="error-message" id="confirmError"></span>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Create Account</button>
-    </form>
-
-    <p class="auth-footer">
-      Already have an account? <a href="login.html">Log in</a>
-    </p>
-    <p class="auth-footer">
-      <a href="../index.html">← Back to home</a>
-    </p>
+    <div id="signupContainer">
+      <input type="text" id="fullName" placeholder="Full Name">
+      <input type="email" id="email" placeholder="Email">
+      <input type="tel" id="phone" placeholder="Phone Number">
+      
+      <select id="userType">
+        <option value="resident">Resident / Customer</option>
+        <option value="business">Business Owner</option>
+      </select>
+      <input type="password" id="password" placeholder="Password">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      
+      <button id="createBtn">Create Account</button>
+    </div>
   </div>
-
   <script type="module">
-    import Auth from '../js/auth.js';
-
-    // Pre-select user type from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
-    if (typeParam) {
-      document.getElementById('userType').value = typeParam;
-    }
-
-    const form = document.getElementById('signupForm');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Clear all errors
-      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-      document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
-
-      const fullName = document.getElementById('fullName').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const userType = document.getElementById('userType').value;
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+const firebaseConfig = {
+  apiKey: "AIzaSyDbOi2aD5eFsiUi6mfFTS-wOj-jWbi5-9M",
+  authDomain: "local-link-mm.firebaseapp.com",
+  projectId: "local-link-mm",
+  storageBucket: "local-link-mm.firebasestorage.app",
+  messagingSenderId: "945184893851",
+  appId: "1:945184893851:web:c84bf0bc2db2d2c81a4f3e"
+};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    document.getElementById('createBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
-
-      let hasError = false;
-
-      if (!fullName) {
-        document.getElementById('nameError').textContent = 'Please enter your name';
-        document.getElementById('fullName').classList.add('error');
-        hasError = true;
-      }
-
-      if (!email) {
-        document.getElementById('emailError').textContent = 'Please enter your email';
-        document.getElementById('email').classList.add('error');
-        hasError = true;
-      }
-
-      if (!userType) {
-        alert('Please select an account type');
-        hasError = true;
-      }
-
-      if (password.length < 6) {
-        document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
-        document.getElementById('password').classList.add('error');
-        hasError = true;
-      }
-
+      // Basic Validation
       if (password !== confirmPassword) {
-        document.getElementById('confirmError').textContent = 'Passwords do not match';
-        document.getElementById('confirmPassword').classList.add('error');
-        hasError = true;
+        alert("Passwords do not match!");
+        return;
       }
-
-      if (hasError) return;
-
-      const result = await Auth.signUp(email, password, {
-        displayName: fullName,
-        phone,
-        userType,
-        fullName
-      });
-
-      if (result.success) {
-        alert('Account created successfully! Redirecting to your dashboard...');
-        const redirects = {
-          customer: 'customer-dashboard.html',
-          vendor: 'vendor-dashboard.html',
-          driver: 'driver-dashboard.html'
-        };
-        window.location.href = redirects[userType] || 'customer-dashboard.html';
-      } else {
-        document.getElementById('emailError').textContent = result.error;
-        document.getElementById('email').classList.add('error');
+      try {
+        const user = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("Success:", user);
+        alert("Account created successfully!");
+        window.location.href = '../dashboard.html'; 
+      } catch (error) {
+        console.error("FIREBASE ERROR:", error);
+        alert("Error: " + error.code);
       }
     });
   </script>
 </body>
 </html>
+

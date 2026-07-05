@@ -1,0 +1,23 @@
+<div class="chat-container">
+    <div id="chat-window" class="chat-window">
+        <p class="ai-msg">Hi! I'm your LocalLink Concierge. Looking for a spicy lunch under R100 or a healthy dinner?</p>
+    </div>
+    <div class="input-group">
+        <input type="text" id="userInput" placeholder="Ask me for a recommendation...">
+        <button onclick="sendToAI()">Send</button>
+    </div>
+</div>
+
+<script>
+    async function sendToAI() {
+        const input = document.getElementById('userInput').value;
+        // Call your Firebase Cloud Function
+        const response = await fetch('https://your-project.cloudfunctions.net/askAI', {
+            method: 'POST',
+            body: JSON.stringify({ message: input, uid: 'current_user_uid' })
+        });
+        const data = await response.json();
+        // Append data.reply to chat-window
+    }
+</script>
+

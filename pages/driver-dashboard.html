@@ -3,75 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver Dashboard - LocalLink</title>
-  <link rel="stylesheet" href="../css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Partner Dashboard | LocalLink</title>
+  <style>
+    :root { --bg: #000000; --card: #171717; --primary: #22c55e; --text: #f8fafc; --accent: #3b82f6; }
+    body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+    
+    /* Partner Info & Earnings */
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .earnings-bar { display: flex; justify-content: space-between; background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px; font-size: 0.9rem; }
+    
+    /* Order Card */
+    .order-card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+    
+    /* Big Buttons */
+    .btn-action { width: 100%; padding: 20px; font-size: 1.2rem; font-weight: bold; border-radius: 12px; border: none; margin-bottom: 10px; cursor: pointer; color: white; }
+    .accept { background: var(--primary); }
+    .nav-btn { background: var(--accent); }
+    .status-badge { background: #334155; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; }
+  </style>
 </head>
-<body class="dashboard">
-  <aside class="sidebar">
-    <div class="sidebar-brand">LocalLink Driver</div>
-    <ul class="sidebar-nav">
-      <li><a href="#" class="active">Dashboard</a></li>
-      <li><a href="#">Available Jobs</a></li>
-      <li><a href="#">My Deliveries</a></li>
-      <li><a href="#">Earnings</a></li>
-      <li><a href="#">Map</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#" id="logoutBtn">Log Out</a></li>
-    </ul>
-  </aside>
+<body>
 
-  <main class="main-content">
-    <div class="dashboard-header">
-      <h1>Driver Dashboard</h1>
-      <span id="currentDate"></span>
-    </div>
+  <!-- Header -->
+  <div class="header-bar">
+    <div><strong>LocalLink Partner</strong></div>
+    <div class="status-badge" id="transportMode">Mode: Walking 🚶</div>
+  </div>
 
-    <div class="dashboard-cards">
-      <div class="dashboard-card">
-        <h3>Completed Trips</h3>
-        <div class="value" id="tripCount">0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Today's Earnings</h3>
-        <div class="value" id="earningsCount">$0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Rating</h3>
-        <div class="value" id="ratingCount">5.0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Available Jobs</h3>
-        <div class="value" id="jobCount">0</div>
-      </div>
-    </div>
+  <!-- Earnings Tracker -->
+  <div class="earnings-bar">
+    <div>Tips: <span id="tips">$0.00</span></div>
+    <div>Fees: <span id="fees">$0.00</span></div>
+    <div>Orders: <span id="count">0</span></div>
+  </div>
 
-    <div class="dashboard-section">
-      <h2>Available Delivery Requests</h2>
-      <div id="deliveryList">
-        <p>No available requests in your area.</p>
-      </div>
-    </div>
-  </main>
+  <!-- Active Order Section -->
+  <div class="order-card" id="activeOrder">
+    <h3 id="orderTitle">Waiting for Orders...</h3>
+    <p id="pickupLoc"><strong>Pickup:</strong> -</p>
+    <p id="dropoffLoc"><strong>Drop-off:</strong> -</p>
+    <button class="btn-action accept" onclick="updateStatus('PICKED_UP')">Accept Order</button>
+  </div>
+
+  <!-- Navigation -->
+  <button class="btn-action nav-btn" onclick="openMaps()">Open Navigation</button>
 
   <script type="module">
-    import Auth from '../js/auth.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
 
-    Auth.init();
-    Auth.onAuthChange = (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-      }
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyDbOi2aD5eFsiUi6mfFTS-wOj-jWbi5-9M",
+  authDomain: "local-link-mm.firebaseapp.com",
+  projectId: "local-link-mm",
+  storageBucket: "local-link-mm.firebasestorage.app",
+  messagingSenderId: "945184893851",
+  appId: "1:945184893851:web:c84bf0bc2db2d2c81a4f3e"
+};
 
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
 
-    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      await Auth.signOut();
-    });
+    // Configuration: Set this based on the user's profile (Driver or Walker)
+    const isWalker = true; 
+    document.getElementById('transportMode').innerText = isWalker ? "Mode: Walking 🚶" : "Mode: Driving 🚗";
+
+    window.openMaps = function() {
+        const destination = "123+Maple+Ave+Bushbuckridge";
+        const travelMode = isWalker ? 'w' : 'd'; 
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=${travelMode}`);
+    }
+
+    window.updateStatus = function(status) {
+        alert("Status updated to: " + status);
+        // You can add your updateDoc function here to sync with Firebase
+    }
   </script>
 </body>
 </html>
+

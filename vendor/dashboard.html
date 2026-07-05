@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vendor Dashboard | LocalLink</title>
+    <link rel="stylesheet" href="css/vendor.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-logo">LocalLink Vendor</div>
+        <a href="dashboard.html" class="nav-item active">🏠 Dashboard</a>
+        <a href="store-profile.html" class="nav-item">🏪 Store Profile</a>
+        <a href="#" class="nav-item">🍔 Menu</a>
+        <a href="#" class="nav-item">📦 Orders</a>
+        </nav>
+
+    <main class="main-content">
+        <header class="topbar">
+            <h2>Dashboard Home</h2>
+            <div class="topbar-actions">
+                <span id="storeStatus">Status: 🟢 Open</span>
+                <span>🔔 Notifications</span>
+                <button class="btn btn-primary">Profile</button>
+            </div>
+        </header>
+
+        <div class="page-container">
+            <div class="grid-cards">
+                <div class="card">
+                    <h3>Today's Revenue</h3>
+                    <h2 id="todayRevenue">$0.00</h2>
+                </div>
+                <div class="card">
+                    <h3>Pending Orders</h3>
+                    <h2 id="pendingOrders">0</h2>
+                </div>
+                <div class="card">
+                    <h3>Customer Rating</h3>
+                    <h2>⭐ 4.8 / 5.0</h2>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <p>Real-time order feed will populate here.</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
+

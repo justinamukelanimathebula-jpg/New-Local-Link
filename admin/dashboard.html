@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>LocalLink Admin</h2>
+        <nav>
+            <a href="dashboard.html" class="active">🏠 Dashboard</a>
+            <a href="orders.html">📦 Orders</a>
+            <a href="#">👥 Users</a>
+            <a href="#">🏪 Vendors</a>
+        </nav>
+    </div>
+
+    <main class="content">
+        <h1>Platform Health</h1>
+        <div class="kpi-grid">
+            <div class="card"><h3>Revenue</h3><p id="totalRev">R 0.00</p></div>
+            <div class="card"><h3>Active Orders</h3><p id="activeOrders">0</p></div>
+            <div class="card"><h3>Pending Verif.</h3><p id="pendingVerif">0</p></div>
+        </div>
+    </main>
+
+    <script type="module" src="js/admin-core.js"></script>
+</body>
+</html>
+

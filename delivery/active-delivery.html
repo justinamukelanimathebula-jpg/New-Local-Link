@@ -1,0 +1,30 @@
+<div class="card">
+    <h3>Pickup Verification</h3>
+    <p>Enter the 4-digit code provided by the restaurant staff.</p>
+    
+    <input type="number" id="pickupCode" placeholder="0000" class="form-control" style="font-size: 2rem; text-align: center; letter-spacing: 10px;">
+    
+    <button id="verifyBtn" class="btn btn-primary" style="margin-top: 15px;">Verify Pickup</button>
+</div>
+
+<script type="module">
+    import { db } from './js/firebase.js';
+    import { doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
+
+    const orderId = "order_xyz_123"; // This comes from the active order
+
+    document.getElementById('verifyBtn').onclick = async () => {
+        const inputCode = document.getElementById('pickupCode').value;
+        const orderRef = doc(db, "orders", orderId);
+        const orderSnap = await getDoc(orderRef);
+
+        if (orderSnap.data().pickupCode === inputCode) {
+            await updateDoc(orderRef, { status: "picked_up" });
+            alert("Verification Successful! You may now deliver.");
+            window.location.href = "navigation.html";
+        } else {
+            alert("Invalid Code. Please ask the vendor for the correct 4-digit pin.");
+        }
+    };
+</script>
+

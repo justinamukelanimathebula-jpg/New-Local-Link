@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../customer/css/customer.css">
+    <style> .step { display: none; } .active { display: block; } </style>
+</head>
+<body>
+    <div class="page-container" style="max-width: 450px; margin: 50px auto;">
+        <div class="card">
+            <div id="step1" class="step active">
+                <h2>Join LocalLink</h2>
+                <input type="text" id="name" placeholder="Full Name" class="form-control">
+                <input type="email" id="email" placeholder="Email" class="form-control">
+                <input type="password" id="pass" placeholder="Password" class="form-control">
+                <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+            </div>
+
+            <div id="step2" class="step">
+                <h2>Choose Account Type</h2>
+                <select id="role" class="form-control" onchange="showFields()">
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                    <option value="driver">Driver (Motorcycle/Car)</option>
+                    <option value="walker">Walker</option>
+                </select>
+                
+                <div id="roleFields" style="margin-top: 15px;"></div>
+                
+                <button id="registerBtn" class="btn btn-primary" style="margin-top: 15px;">Create Account</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        function nextStep() { document.getElementById('step1').classList.remove('active'); document.getElementById('step2').classList.add('active'); }
+        function showFields() { /* Add logic to show inputs based on role selection */ }
+    </script>
+</body>
+</html>
+

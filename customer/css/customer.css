@@ -1,0 +1,77 @@
+/* customer/css/customer.css */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #f97316; /* Orange for food appeal */
+    --primary-hover: #ea580c;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --border: #334155;
+    --bottom-nav-height: 70px;
+}
+
+body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-dark); color: var(--text-main);
+    padding-bottom: var(--bottom-nav-height); /* Prevent content from hiding under nav */
+}
+
+/* App Header */
+.app-header {
+    background: var(--bg-dark); padding: 15px 20px;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.location-tag { color: var(--primary); font-weight: bold; font-size: 0.9rem; }
+.search-bar {
+    width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid var(--border);
+    color: white; border-radius: 8px; box-sizing: border-box;
+}
+
+/* Page Layout */
+.page-container { padding: 20px; }
+.section-title { font-size: 1.2rem; margin-bottom: 15px; display: flex; justify-content: space-between; }
+.section-title a { color: var(--primary); font-size: 0.9rem; text-decoration: none; }
+
+/* Categories (Horizontal Scroll) */
+.category-scroll {
+    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+.category-scroll::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
+.category-card {
+    background: var(--card-bg); padding: 15px 20px; border-radius: 12px;
+    min-width: 100px; text-align: center; border: 1px solid var(--border); cursor: pointer;
+}
+
+/* Restaurant Cards */
+.restaurant-card {
+    background: var(--card-bg); border-radius: 12px; overflow: hidden;
+    margin-bottom: 20px; border: 1px solid var(--border);
+}
+.rest-image { width: 100%; height: 150px; background: #334155; object-fit: cover; }
+.rest-info { padding: 15px; }
+.rest-info h3 { margin: 0 0 5px 0; }
+.rest-meta { color: var(--text-muted); font-size: 0.9rem; display: flex; gap: 10px; }
+
+/* Forms & Buttons */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem; }
+.form-control { width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--border); color: white; border-radius: 8px; box-sizing: border-box; }
+.form-control:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn { padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: white; width: 100%; transition: 0.2s; }
+.btn-primary { background: var(--primary); }
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: var(--bottom-nav-height);
+    background: var(--card-bg); border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around; align-items: center; z-index: 100;
+}
+.nav-item { color: var(--text-muted); text-decoration: none; text-align: center; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
+.nav-item.active { color: var(--primary); }
+

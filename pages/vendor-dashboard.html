@@ -2,87 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Dashboard - LocalLink</title>
-  <link rel="stylesheet" href="../css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Vendor Master Hub</title>
+  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+  <style>
+    body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; }
+    .card { background: #1e293b; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155; }
+    input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+    .btn { padding: 12px; border-radius: 8px; border: none; cursor: pointer; color: white; width: 100%; margin-top: 5px; }
+    .btn-blue { background: #3b82f6; }
+    .btn-green { background: #22c55e; }
+  </style>
 </head>
-<body class="dashboard">
-  <aside class="sidebar">
-    <div class="sidebar-brand">LocalLink Business</div>
-    <ul class="sidebar-nav">
-      <li><a href="#" class="active">Dashboard</a></li>
-      <li><a href="#">My Business</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Bookings</a></li>
-      <li><a href="#">Orders</a></li>
-      <li><a href="#">Reviews</a></li>
-      <li><a href="#">Analytics</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#" id="logoutBtn">Log Out</a></li>
-    </ul>
-  </aside>
+<body>
 
-  <main class="main-content">
-    <div class="dashboard-header">
-      <h1>Business Dashboard</h1>
-      <span id="currentDate"></span>
-    </div>
+  <div class="card">
+    <h3>1. Setup Store</h3>
+    <input type="text" id="storeName" placeholder="Store Name">
+    <input type="text" id="storeDesc" placeholder="Description">
+    <button id="logoBtn" class="btn btn-blue">Upload Logo</button>
+    <button id="publishBtn" class="btn btn-green">Publish Store Profile</button>
+  </div>
 
-    <div class="dashboard-cards">
-      <div class="dashboard-card">
-        <h3>Total Bookings</h3>
-        <div class="value" id="bookingCount">0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Today's Orders</h3>
-        <div class="value" id="orderCount">0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Customer Reviews</h3>
-        <div class="value" id="reviewCount">0</div>
-      </div>
-      <div class="dashboard-card">
-        <h3>Revenue</h3>
-        <div class="value" id="revenueCount">$0</div>
-      </div>
-    </div>
+  <div class="card">
+    <h3>Live Orders</h3>
+    <div id="new-orders">None</div>
+  </div>
 
-    <div class="dashboard-section">
-      <h2>Recent Bookings</h2>
-      <div id="bookingsList">
-        <p>No bookings yet.</p>
-      </div>
-    </div>
-
-    <div class="dashboard-section">
-      <h2>Quick Actions</h2>
-      <div class="quick-actions">
-        <button class="btn btn-primary">Add Service</button>
-        <button class="btn btn-outline">View Menu</button>
-        <button class="btn btn-outline">Promotions</button>
-      </div>
-    </div>
-  </main>
+  <div class="card">
+    <h3>Add Menu Item</h3>
+    <input type="text" id="itemName" placeholder="Item Name">
+    <input type="number" id="itemPrice" placeholder="Price">
+    <button id="addMenuBtn" class="btn btn-blue">Add to Menu</button>
+  </div>
 
   <script type="module">
-    import Auth from '../js/auth.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+    import { getFirestore, collection, addDoc, setDoc, doc } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
 
-    Auth.init();
-    Auth.onAuthChange = (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-      }
+    const db = getFirestore(initializeApp({ apiKey: "AIzaSyDbOi2aD5eFsiUi6mfFTS-wOj-jWbi5-9M", authDomain: "local-link-mm.firebaseapp.com", projectId: "local-link-mm", storageBucket: "local-link-mm.firebasestorage.app", messagingSenderId: "945184893851", appId: "1:945184893851:web:c84bf0bc2db2d2c81a4f3e" }));
+    
+    let logoUrl = "";
+    var widget = cloudinary.createUploadWidget({ cloudName: 'dorplj8g9', uploadPreset: 'Local_link_preset' }, (e, r) => {
+        if(r.event === "success") { logoUrl = r.info.secure_url; alert("Logo uploaded!"); }
+    });
+    document.getElementById("logoBtn").onclick = () => widget.open();
+
+    // PUBLISH STORE
+    document.getElementById("publishBtn").onclick = async () => {
+        const id = document.getElementById('storeName').value.toLowerCase().replace(/\s+/g, '-');
+        await setDoc(doc(db, "stores", id), { 
+            name: document.getElementById('storeName').value, 
+            description: document.getElementById('storeDesc').value, 
+            logo: logoUrl 
+        });
+        localStorage.setItem('myStoreId', id); 
+        alert("Store Published! ID: " + id);
     };
 
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      await Auth.signOut();
-    });
+    // ADD MENU ITEM
+    document.getElementById("addMenuBtn").onclick = async () => {
+        const storeId = localStorage.getItem('myStoreId');
+        if(!storeId) { alert("Please Publish Store Profile first!"); return; }
+        await addDoc(collection(db, "menu"), { 
+            name: document.getElementById('itemName').value, 
+            price: document.getElementById('itemPrice').value, 
+            storeId: storeId 
+        });
+        alert("Item Added!");
+    };
   </script>
 </body>
 </html>
+
