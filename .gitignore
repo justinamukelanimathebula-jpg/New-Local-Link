@@ -45,3 +45,8 @@ config/firebase.config.js
 
 # dataconnect
 .dataconnect
+
+*.json
+firebase-debug.log
+node_modules/
+
